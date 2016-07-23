@@ -39,9 +39,13 @@ class Stylus
 
     protected function getPath()
     {
-        return isset($this->path)
-            ? $this->path
-            : $this->getTempPath();
+        if ($this->path) {
+            return $this->path;
+        }
+        $path = $this->getTempPath();
+        file_put_contents($path, $this->getStylus());
+
+        return $path;
     }
 
     protected function cleanTempFiles()
@@ -78,14 +82,13 @@ class Stylus
         $css = $this->stylusExec('--print ' . escapeshellarg($this->getPath()), array($this, 'toString'));
         $this->cleanTempFiles();
 
-        return $css;
+        return $css ?: '';
     }
 
     public function write($file)
     {
         $this->renderFile = $file;
-        $path = $this->path ?: $this->getTempPath();
-        $this->stylusExec(' < ' . escapeshellarg($path) . ' > ' . escapeshellarg($file), array($this, 'toFile'));
+        $this->stylusExec(' < ' . escapeshellarg($this->getPath()) . ' > ' . escapeshellarg($file), array($this, 'toFile'));
         $this->cleanTempFiles();
     }
 

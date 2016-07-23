@@ -27,6 +27,26 @@ class StylusTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expected, $stylus, 'Stylus can be get as it with a raw input.');
     }
 
+    public function testGetCssFromRaw()
+    {
+        $code = "body\n" .
+            "  color red\n" .
+            "  font 14px Arial, sans-serif\n" .
+            "  a\n" .
+            "    text-decoration: none";
+        $stylus = new Stylus($code);
+        $css = trim($stylus->getCss());
+        $expected = "body {\n" .
+            "  color: #f00;\n" .
+            "  font: 14px Arial, sans-serif;\n" .
+            "}\n" .
+            "body a {\n" .
+            "  text-decoration: none;\n" .
+            "}";
+
+        $this->assertSame($expected, $css, 'Stylus should be rendered anyway.');
+    }
+
     public function testGetStylusFromPath()
     {
         $stylus = new Stylus(__DIR__ . '/test.styl');
@@ -53,6 +73,21 @@ class StylusTest extends PHPUnit_Framework_TestCase
             "}";
 
         $this->assertSame($expected, $css, 'Stylus should be rendered anyway.');
+    }
+
+    public function testGetMinifiedCss()
+    {
+        $stylus = new Stylus(__DIR__ . '/test.styl', true);
+        $css = trim($stylus);
+        $expected = "body{" .
+            "color:#f00;" .
+            "font:14px Arial,sans-serif;" .
+            "}" .
+            "body a{" .
+            "text-decoration:none" .
+            "}";
+
+        $this->assertSame($expected, $css, 'Stylus should be rendered compressed if set to true.');
     }
 
     public function testWrite()
