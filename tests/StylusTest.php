@@ -1,6 +1,16 @@
 <?php
 
 use NodejsPhpFallback\Stylus;
+use NodejsPhpFallback\NodejsPhpFallback;
+
+class StylusWithoutNode extends Stylus
+{
+    public function __construct($file, $compress = false)
+    {
+        parent::__construct($file, $compress);
+        $this->node = new NodejsPhpFallback('nowhere');
+    }
+}
 
 class StylusTest extends PHPUnit_Framework_TestCase
 {
@@ -62,4 +72,44 @@ class StylusTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $css, 'Stylus should be rendered anyway.');
     }
+
+    public function testGetCssWithoutNode()
+    {
+        $code = "body\n" .
+            "  color red\n" .
+            "  font 14px Arial, sans-serif\n" .
+            "  a\n" .
+            "    text-decoration: none";
+        $expected = "body {\n" .
+            "  color: red;\n" .
+            "  font: 14px Arial, sans-serif;\n" .
+            "}\n" .
+            "body a {\n" .
+            "  text-decoration: none;\n" .
+            "}";
+        $stylus = new StylusWithoutNode($code);
+        $css = trim(str_replace(array("\r", "\t"), array('', '  '), $stylus->getCss()));
+
+        $this->assertSame($expected, $css, 'Stylus should be rendered anyway.');
+    }
+
+    public function testWriteWithoutNode()
+    {
+        $expected = "body {\n" .
+            "  color: red;\n" .
+            "  font: 14px Arial, sans-serif;\n" .
+            "}\n" .
+            "body a {\n" .
+            "  text-decoration: none;\n" .
+            "}";
+        $file = sys_get_temp_dir() . '/test.css';
+        $stylus = new StylusWithoutNode(__DIR__ . '/test.styl');
+        $stylus->write($file);
+        $css = trim(file_get_contents($file));
+        unlink($file);
+        $css = str_replace(array("\r", "\t"), array('', '  '), $css);
+
+        $this->assertSame($expected, $css, 'Stylus should be rendered anyway.');
+    }
+
 }

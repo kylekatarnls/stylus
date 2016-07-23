@@ -11,6 +11,7 @@ class Stylus
     protected $compress;
     protected $node;
     protected $stylus;
+    protected $renderFile;
 
     public function __construct($file, $compress = false)
     {
@@ -45,19 +46,24 @@ class Stylus
 
     protected function cleanTempFiles()
     {
-        if (!isset($this->path)) {
-            unlink($this->getTempPath());
+        if (!isset($this->path) && file_exists($path = $this->getTempPath())) {
+            unlink($path);
         }
     }
 
-    protected function toString()
+    protected function getStylusCompiler()
     {
-        return $this->stylus->toString();
+        return $this->stylus->fromString($this->getStylus());
     }
 
-    protected function toFile()
+    public function toString()
     {
-        return $this->stylus->toString($this->getPath());
+        return $this->getStylusCompiler()->toString();
+    }
+
+    public function toFile()
+    {
+        file_put_contents($this->renderFile, $this);
     }
 
     public function getStylus()
@@ -77,9 +83,8 @@ class Stylus
 
     public function write($file)
     {
-        $path = isset($this->path)
-            ? $this->path
-            : sys_get_temp_dir() . '/stylus.compilation';
+        $this->renderFile = $file;
+        $path = $this->path ?: $this->getTempPath();
         $this->stylusExec(' < ' . escapeshellarg($path) . ' > ' . escapeshellarg($file), array($this, 'toFile'));
         $this->cleanTempFiles();
     }
