@@ -1,7 +1,7 @@
 <?php
 
-use NodejsPhpFallback\Stylus;
 use NodejsPhpFallback\NodejsPhpFallback;
+use NodejsPhpFallback\Stylus;
 
 class StylusWithoutNode extends Stylus
 {
