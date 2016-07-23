@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "nodejs-php-fallback/nodejs-php-fallback": "^1.1.0",
+        "nodejs-php-fallback/nodejs-php-fallback": "^1.1.1",
         "kylekatarnls/stylus": "*"
     },
     "extra": {

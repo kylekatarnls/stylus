@@ -11,6 +11,7 @@ class Stylus
     protected $compress;
     protected $node;
     protected $stylus;
+    protected $renderFile;
 
     public function __construct($file, $compress = false)
     {
@@ -38,26 +39,35 @@ class Stylus
 
     protected function getPath()
     {
-        return isset($this->path)
-            ? $this->path
-            : $this->getTempPath();
+        if ($this->path) {
+            return $this->path;
+        }
+        $path = $this->getTempPath();
+        file_put_contents($path, $this->getStylus());
+
+        return $path;
     }
 
     protected function cleanTempFiles()
     {
-        if (!isset($this->path)) {
-            unlink($this->getTempPath());
+        if (!isset($this->path) && file_exists($path = $this->getTempPath())) {
+            unlink($path);
         }
     }
 
-    protected function toString()
+    protected function getStylusCompiler()
     {
-        return $this->stylus->toString();
+        return $this->stylus->fromString($this->getStylus());
     }
 
-    protected function toFile()
+    public function toString()
     {
-        return $this->stylus->toString($this->getPath());
+        return $this->getStylusCompiler()->toString();
+    }
+
+    public function toFile()
+    {
+        file_put_contents($this->renderFile, $this);
     }
 
     public function getStylus()
@@ -72,15 +82,13 @@ class Stylus
         $css = $this->stylusExec('--print ' . escapeshellarg($this->getPath()), array($this, 'toString'));
         $this->cleanTempFiles();
 
-        return $css;
+        return $css ?: '';
     }
 
     public function write($file)
     {
-        $path = isset($this->path)
-            ? $this->path
-            : sys_get_temp_dir() . '/stylus.compilation';
-        $this->stylusExec(' < ' . escapeshellarg($path) . ' > ' . escapeshellarg($file), array($this, 'toFile'));
+        $this->renderFile = $file;
+        $this->stylusExec(' < ' . escapeshellarg($this->getPath()) . ' > ' . escapeshellarg($file), array($this, 'toFile'));
         $this->cleanTempFiles();
     }
 
