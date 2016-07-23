@@ -4,3 +4,4 @@ enabled:
 disabled:
   - short_array_syntax
   - concat_without_spaces
+  - single_quote
