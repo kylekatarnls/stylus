@@ -1,7 +1,7 @@
 # stylus
 [![Latest Stable Version](https://poser.pugx.org/nodejs-php-fallback/stylus/v/stable.png)](https://packagist.org/packages/nodejs-php-fallback/stylus)
 [![Build Status](https://travis-ci.org/kylekatarnls/stylus.svg?branch=master)](https://travis-ci.org/kylekatarnls/stylus)
-[![StyleCI](https://styleci.io/repos/62958645/shield?style=flat)](https://styleci.io/repos/62958645)
+[![StyleCI](https://styleci.io/repos/63960936/shield?style=flat)](https://styleci.io/repos/63960936)
 [![Test Coverage](https://codeclimate.com/github/kylekatarnls/stylus/badges/coverage.svg)](https://codecov.io/github/kylekatarnls/stylus?branch=master)
 [![Code Climate](https://codeclimate.com/github/kylekatarnls/stylus/badges/gpa.svg)](https://codeclimate.com/github/kylekatarnls/stylus)
 
