@@ -2,7 +2,7 @@
 
 namespace NodejsPhpFallback;
 
-use Stylus\Stylus;
+use Stylus\Stylus as PhpStylusEngine;
 
 class Stylus
 {
@@ -17,7 +17,7 @@ class Stylus
         $key = file_exists($file) ? 'path' : 'contents';
         $this->$key = $file;
         $this->node = new NodejsPhpFallback();
-        $this->stylus = new Stylus();
+        $this->stylus = new PhpStylusEngine();
         $this->compress = $compress;
     }
 
