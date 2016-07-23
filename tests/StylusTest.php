@@ -111,5 +111,4 @@ class StylusTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $css, 'Stylus should be rendered anyway.');
     }
-
 }
