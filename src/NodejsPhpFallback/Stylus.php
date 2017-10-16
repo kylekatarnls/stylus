@@ -40,7 +40,7 @@ class Stylus
         return $this->node->execModuleScript(
             'stylus',
             'bin/stylus',
-            (count($includes) ? '--include ' . implode(',', $includes) . ' ' : '') .
+            (count($includes) ? '--include "' . implode('" --include "', $includes) . '" ' : '') .
             ($this->compress ? '-c ' : '') . $arguments,
             $fallback
         );
