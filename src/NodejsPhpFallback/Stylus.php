@@ -19,14 +19,28 @@ class Stylus
         $this->$key = $file;
         $this->node = new NodejsPhpFallback();
         $this->stylus = new PhpStylusEngine();
+        if ($key === 'path') {
+            $this->stylus->setReadDir(dirname($file));
+        }
         $this->compress = $compress;
     }
 
     protected function stylusExec($arguments, $fallback)
     {
+        $includes = array();
+        $pieces = preg_split('/[\\\\\\/]vendor[\\\\\\/]/i', __DIR__);
+        if (count($pieces) > 1) {
+            array_pop($pieces);
+            $includes[] = implode(DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR, $pieces);
+        }
+        if (isset($this->path)) {
+            $includes[] = dirname($this->path);
+        }
+
         return $this->node->execModuleScript(
             'stylus',
             'bin/stylus',
+            (count($includes) ? '--include ' . implode(',', $includes) . ' ' : '') .
             ($this->compress ? '-c ' : '') . $arguments,
             $fallback
         );

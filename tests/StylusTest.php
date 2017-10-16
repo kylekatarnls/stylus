@@ -90,6 +90,21 @@ class StylusTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expected, $css, 'Stylus should be rendered compressed if set to true.');
     }
 
+    public function testImportStylusFile()
+    {
+        $stylus = new Stylus(__DIR__ . '/test-import.styl', true);
+        $css = trim($stylus);
+        $expected = "body{" .
+            "color:#f00;" .
+            "font:14px Arial,sans-serif;" .
+            "}" .
+            "body a{" .
+            "text-decoration:none" .
+            "}";
+
+        $this->assertSame($expected, $css, 'Stylus should be rendered compressed if set to true.');
+    }
+
     public function testWrite()
     {
         $file = sys_get_temp_dir() . '/test.css';
