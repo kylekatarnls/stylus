@@ -15,6 +15,7 @@ php:
 matrix:
     include:
         - php: 5.3
+          node_js: 8
           dist: precise
 
 before_script:
