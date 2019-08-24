@@ -78,10 +78,10 @@ class StylusTest extends PHPUnit_Framework_TestCase
     public function testGetMinifiedCss()
     {
         $stylus = new Stylus(__DIR__ . '/test.styl', true);
-        $css = trim($stylus);
+        $css = str_replace(';}', '}', trim($stylus));
         $expected = "body{" .
             "color:#f00;" .
-            "font:14px Arial,sans-serif;" .
+            "font:14px Arial,sans-serif" .
             "}" .
             "body a{" .
             "text-decoration:none" .
@@ -93,10 +93,10 @@ class StylusTest extends PHPUnit_Framework_TestCase
     public function testImportStylusFile()
     {
         $stylus = new Stylus(__DIR__ . '/test-import.styl', true);
-        $css = trim($stylus);
+        $css = str_replace(';}', '}', trim($stylus));
         $expected = "body{" .
             "color:#f00;" .
-            "font:14px Arial,sans-serif;" .
+            "font:14px Arial,sans-serif" .
             "}" .
             "body a{" .
             "text-decoration:none" .
