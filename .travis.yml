@@ -12,8 +12,12 @@ php:
   - 7.1
   - 7.2
   - 7.3
+  - 7.4
 
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source --dev
 
@@ -21,11 +25,11 @@ script:
   - vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
 
 after_script:
-  - vendor/bin/test-reporter --coverage-report coverage.xml
+  -  ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
-addons:
-  code_climate:
-    repo_token: 02e57319943d31e22263c9ecb87c5c661837c6906ce357502e54da3115b32352
+env:
+  global:
+    - CC_TEST_REPORTER_ID=02e57319943d31e22263c9ecb87c5c661837c6906ce357502e54da3115b32352

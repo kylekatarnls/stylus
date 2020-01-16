@@ -2,6 +2,7 @@
 
 use NodejsPhpFallback\NodejsPhpFallback;
 use NodejsPhpFallback\Stylus;
+use PHPUnit\Framework\TestCase;
 
 class StylusWithoutNode extends Stylus
 {
@@ -12,7 +13,7 @@ class StylusWithoutNode extends Stylus
     }
 }
 
-class StylusTest extends PHPUnit_Framework_TestCase
+class StylusTest extends TestCase
 {
     public function testGetStylusFromRaw()
     {
