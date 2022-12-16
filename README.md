@@ -46,3 +46,9 @@ $cssContents = $stylus->getCss();
 // Pass true to the Stylus constructor to minify the rendered CSS:
 $stylus = new Stylus('path/to/my-stylus-file.styl', true);
 ```
+
+## Security contact information
+
+To report a security vulnerability, please use the
+[Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
